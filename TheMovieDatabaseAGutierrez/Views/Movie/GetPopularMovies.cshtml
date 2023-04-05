@@ -1,0 +1,40 @@
+﻿@model TheMovieDatabaseAGutierrez.Models.Movie
+@{
+    ViewData["Title"] = "GetPopularMovies";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    <link rel="stylesheet" href="~/css/GetPopularMovies.css" />
+
+}
+@using (Html.BeginForm("AddFavoriteMovie", "Movie", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <form>
+        <section class="articles">
+
+            @foreach (TheMovieDatabaseAGutierrez.Models.Movie movie in Model.Movies)
+            {
+                <article>
+                    <div class="article-wrapper">
+                        <figure>
+                            <img src="@movie.Imagen">
+                        </figure>
+                        <div class="article-body">
+                            <h2>@movie.Titulo</h2>
+                            <p>@movie.Descripcion</p>
+                            <h7 style="display:none">@movie.IdMovie</h7>
+                            <div class="button-wrapper">
+                                <div style="float:right;">
+
+                                    @Html.ActionLink("Añadir a Favoritos", "AddFavoriteMovie", "Movie", new { IdMovie = movie.IdMovie  },  Html.Name("1"))
+
+                                   @* @Html.ActionLink("link text", "someaction", "somecontroller", new { id = "123" }, null)*@
+
+                                    @*<input type="submit" value="Añadir a Favoritos" class="btn btn-success" />*@
+
+                                    @* <a class="btn btn-success" href="@Url.Action("AddFavoriteMovie", "Movie", new { IdMovie = movie.IdMovie })" >Añadir a favoritos</a>*@
+                                </div>
+                            </div>
+                </article>
+            }
+        </section>
+    </form>
+}

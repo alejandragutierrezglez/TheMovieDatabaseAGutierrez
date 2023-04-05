@@ -1,0 +1,29 @@
+﻿@{
+    ViewData["Title"] = "GetFavoriteMovie";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    <link rel="stylesheet" href="~/css/GetPopularMovies.css" />
+}
+
+<section class="articles">
+
+    @foreach (TheMovieDatabaseAGutierrez.Models.Movie movie in Model.Movies)
+    {
+        <article>
+            <div class="article-wrapper">
+                <figure>
+                    <img src="@movie.Imagen">
+                </figure>
+                <div class="article-body">
+                    <h2>@movie.Titulo</h2>
+                    <p>@movie.Descripcion</p>
+                    <h7 style="display:none">@movie.IdMovie</h7>
+                    <div class="button-wrapper">
+                        <div style="float:right;">
+                            @Html.ActionLink("Quitar de Favoritos", "DeleteFavoriteMovie", "Movie", new { IdMovie = movie.IdMovie}, Html.Name("0"));
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </article>
+    }
+</section>
