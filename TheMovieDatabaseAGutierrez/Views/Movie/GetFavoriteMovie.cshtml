@@ -19,7 +19,7 @@
                     <h7 style="display:none">@movie.IdMovie</h7>
                     <div class="button-wrapper">
                         <div style="float:right;">
-                            @Html.ActionLink("Quitar de Favoritos", "DeleteFavoriteMovie", "Movie", new { IdMovie = movie.IdMovie}, Html.Name("0"));
+                            @Html.ActionLink("Quitar de Favoritos", "AddFavoriteMovie", "Movie", new { IdMovie = movie.IdMovie, IdAccion = 0});
                         </div>
                     </div>
                 </div>

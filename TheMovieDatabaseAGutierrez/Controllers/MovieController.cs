@@ -49,14 +49,15 @@ namespace TheMovieDatabaseAGutierrez.Controllers
         }
 
 
-        public ActionResult AddFavoriteMovie(int? IdMovie)
+        public ActionResult AddFavoriteMovie(int? IdMovie, int IdAccion)
         {
+
             Models.Movie movie = new Models.Movie();
             movie.media_id = IdMovie.Value;
             movie.media_type = "movie";
             movie.favorite = true;
 
-            if (IdMovie != null)
+            if (IdAccion == 1)
             {
                 using (var client = new HttpClient())
                 {
@@ -70,49 +71,43 @@ namespace TheMovieDatabaseAGutierrez.Controllers
 
                     if (resultServicio.IsSuccessStatusCode)
                     {
-                        ViewBag.Message = "Se ha agregado el registro";
+                        ViewBag.Message = "Se ha agregado a Favoritos";
                         return PartialView("Modal");
                     }
                     else
                     {
-                        ViewBag.Message = "No se ha agregado el registro";
+                        ViewBag.Message = "No se ha agregado a Favoritos";
                         return PartialView("Modal");
                     }
 
                 }
 
             }
-
-            return View(movie);
-        }
-
-        public ActionResult DeleteFavoriteMovie(int? IdMovie)
-        {
-            Models.Movie movie = new Models.Movie();
-            movie.media_id = IdMovie.Value;
-            movie.media_type = "movie";
-            movie.favorite = false;
-
-            if (IdMovie != null)
+            if (IdAccion == 0)
             {
+                Models.Movie movie1 = new Models.Movie();
+                movie1.media_id = IdMovie.Value;
+                movie1.media_type = "movie";
+                movie1.favorite = false;
+
                 using (var client = new HttpClient())
                 {
                     string urlApi = _configuration["urlApi"];
                     client.BaseAddress = new Uri(urlApi);
 
-                    var postTask = client.PostAsJsonAsync<Models.Movie>("account/18702691/favorite?api_key=eba03a37a4b8824ee1a58415b544159d&session_id=f09a94b6482162cd7b22b099853a92573747326b", movie);
+                    var postTask = client.PostAsJsonAsync<Models.Movie>("account/18702691/favorite?api_key=eba03a37a4b8824ee1a58415b544159d&session_id=f09a94b6482162cd7b22b099853a92573747326b", movie1);
                     postTask.Wait();
 
                     var resultServicio = postTask.Result;
 
                     if (resultServicio.IsSuccessStatusCode)
                     {
-                        ViewBag.Message = "Se ha eliminado de favoritos";
+                        ViewBag.Message = "Se ha eliminado de Favoritos";
                         return PartialView("ModalFav");
                     }
                     else
                     {
-                        ViewBag.Message = "No se ha eliminado de favoritos";
+                        ViewBag.Message = "No se ha eliminado de Favoritos";
                         return PartialView("ModalFav");
                     }
 
@@ -122,6 +117,43 @@ namespace TheMovieDatabaseAGutierrez.Controllers
 
             return View(movie);
         }
+
+        //public ActionResult DeleteFavoriteMovie(int? IdMovie)
+        //{
+        //    Models.Movie movie = new Models.Movie();
+        //    movie.media_id = IdMovie.Value;
+        //    movie.media_type = "movie";
+        //    movie.favorite = false;
+
+        //    if (IdMovie != null)
+        //    {
+        //        using (var client = new HttpClient())
+        //        {
+        //            string urlApi = _configuration["urlApi"];
+        //            client.BaseAddress = new Uri(urlApi);
+
+        //            var postTask = client.PostAsJsonAsync<Models.Movie>("account/18702691/favorite?api_key=eba03a37a4b8824ee1a58415b544159d&session_id=f09a94b6482162cd7b22b099853a92573747326b", movie);
+        //            postTask.Wait();
+
+        //            var resultServicio = postTask.Result;
+
+        //            if (resultServicio.IsSuccessStatusCode)
+        //            {
+        //                ViewBag.Message = "Se ha eliminado de favoritos";
+        //                return PartialView("ModalFav");
+        //            }
+        //            else
+        //            {
+        //                ViewBag.Message = "No se ha eliminado de favoritos";
+        //                return PartialView("ModalFav");
+        //            }
+
+        //        }
+
+        //    }
+
+        //    return View(movie);
+        //}
 
         public ActionResult GetFavoriteMovie()
         {
