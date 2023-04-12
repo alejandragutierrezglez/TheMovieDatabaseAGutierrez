@@ -2,6 +2,7 @@
 using Newtonsoft.Json.Linq;
 using TheMovieDatabaseAGutierrez.Models;
 
+
 namespace TheMovieDatabaseAGutierrez.Controllers
 {
     public class MovieController : Controller
@@ -188,6 +189,38 @@ namespace TheMovieDatabaseAGutierrez.Controllers
             }
             return View(movie);
 
+        }
+
+        [HttpGet]
+        public ActionResult Login()
+        {
+            return View();
+        }
+
+
+        [HttpPost]
+        public ActionResult Login(string username, string password)
+        {
+            ML.Result result = BL.Usuario.GetByUsername(username);
+
+            if (result.Correct)
+            {
+                ML.Usuario usuario = (ML.Usuario)result.Object;
+                if (password == usuario.Password)
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    ViewBag.Message = "Las credenciales no coinciden";
+                    return PartialView("ModalLogin");
+                }
+            }
+            else
+            {
+                ViewBag.Message = "El usuario no existe, verifica tus datos nuevamente.";
+                return PartialView("ModalLogin");
+            }
         }
     }
 }

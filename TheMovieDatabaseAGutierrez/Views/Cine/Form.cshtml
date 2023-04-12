@@ -1,0 +1,134 @@
+﻿@model ML.Cine
+@{
+    ViewData["Title"] = "Form";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Formulario para agregar cines</h2>
+
+<div class="row">
+    <div class="col-12">
+        <h5>Ingrese los datos del nuevo cine:</h5>
+    </div>
+</div>
+
+
+
+@using (Html.BeginForm("Form", "Cine", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+
+    <div class="row">
+        <div class="col-md-12" style="display: none;">
+            @Html.TextBoxFor(model => model.IdCine, new { @class = "visually-hidden form-control"})
+        </div>
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.Latitud)
+            @Html.TextBoxFor(model => model.Latitud, new { @class = "form-control", id = "txtLatitud" })
+            @Html.ValidationMessageFor(model => model.Latitud,  null, new { @class = "text-danger" })
+        </div>
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.Longitud)
+            @Html.TextBoxFor(model => model.Longitud, new { @class = "form-control", id = "txtLongitud" })
+            @Html.ValidationMessageFor(model => model.Longitud,  null, new { @class = "text-danger" })
+        </div>
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.Direccion)
+            @Html.TextBoxFor(model => model.Direccion, new { @class = "form-control", id = "txtDireccion" })
+            @Html.ValidationMessageFor(model => model.Direccion,  null, new { @class = "text-danger" })
+        </div>
+        <div class="col-md-1">
+            @Html.LabelFor(model => model.Venta)
+            @Html.TextBoxFor(model => model.Venta, new { @class = "form-control", id = "txtVenta" })
+            @Html.ValidationMessageFor(model => model.Venta,  null, new { @class = "text-danger" })
+        </div>
+        <div class="col-md-2">
+            @Html.LabelFor(model => model.Zona)
+            @Html.DropDownListFor(model => model.Zona.IdZona, new SelectList(Model.Zona.Zonas, "IdZona", "Nombre"), "Selecciona la zona correspondiente", new { @class = "form-control" })
+        </div>
+    </div>
+    <br />
+    <div class="form-group">
+        <div class="col-md-12">
+            <input type="submit" value="Guardar" class="btn btn-success" />
+            @Html.ActionLink("Regresar", "GetAll", "Cine", htmlAttributes: new { @class = "btn btn-danger" })
+        </div>
+    </div>
+    <br />
+}
+<div class="col-md-3">
+    <div id="map"></div>
+</div>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCSKBDdPPlfca_zTwyxKiicRQn1qfgRjLw&callback=initMap&libraries=&y=weeky" defer></script>
+
+<style>
+    #map {
+        height: 500px;
+        width: 700px;
+    }
+</style>
+
+@section Scripts {
+  
+    <script type="text/javascript">
+
+        // Initialize and add the map
+        function initMap() {  
+            
+             if ($("#txtLatitud").val() == 0 && $("#txtLongitud").val() == 0) {
+                myLatlng = { lat: 19.43541246714632, lng: -99.14128583118732 };
+                } else {
+                    myLatlng = { lat: parseDecimal($("#txtLatitud").val()), lng: parseDecimal($("#txtLongitud").val()) };
+                }
+
+
+            // The map, centered at Bellas Artes
+            const map = new google.maps.Map(document.getElementById("map"), {
+                zoom: 12,
+                center: myLatlng,
+            });
+
+
+            // Create the initial InfoWindow.
+            let infoWindow = new google.maps.InfoWindow({
+                content: "Elige el lugar del nuevo cine",
+                position: myLatlng,
+            });
+
+            infoWindow.open(map);
+
+            //obtener direccion
+            google.maps.event.addListener(map, 'click', function (event) {
+                var geocoder = new google.maps.Geocoder();
+                geocoder.geocode({
+                    'latLng': event.latLng
+                }, function (results, status) {
+                    if (status == google.maps.GeocoderStatus.OK) {
+                        if (results[0]) {
+                            $("#txtDireccion").val(results[0].formatted_address);
+                        }
+                    }
+                });
+            });
+
+            map.addListener("click", (mapsMouseEvent) => {
+                // Close the current InfoWindow.
+                infoWindow.close();
+                // Create a new InfoWindow.
+                infoWindow = new google.maps.InfoWindow({
+                    position: mapsMouseEvent.latLng,
+                });
+                infoWindow.setContent(
+                    JSON.stringify(mapsMouseEvent.latLng.toJSON(), null, 2)
+                );
+                infoWindow.open(map);
+                var Latitud = mapsMouseEvent.latLng.lat();
+                var Longitud = mapsMouseEvent.latLng.lng();
+                $("#txtLatitud").val(Latitud);
+                $("#txtLongitud").val(Longitud);
+
+            });
+        }
+        window.initMap = initMap;
+    </script>
+}
