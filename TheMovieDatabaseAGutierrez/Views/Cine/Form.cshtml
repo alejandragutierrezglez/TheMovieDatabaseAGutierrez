@@ -71,13 +71,15 @@
 @section Scripts {
   
     <script type="text/javascript">
-
         // Initialize and add the map
         function initMap() {  
             
-             if ($("#txtLatitud").val() == 0 && $("#txtLongitud").val() == 0) {
+             if ($("#txtLatitud").val() == 0 && $("#txtLongitud").val() == 0) 
+                {
                 myLatlng = { lat: 19.43541246714632, lng: -99.14128583118732 };
-                } else {
+                } 
+                else
+                {
                     myLatlng = { lat: parseDecimal($("#txtLatitud").val()), lng: parseDecimal($("#txtLongitud").val()) };
                 }
 

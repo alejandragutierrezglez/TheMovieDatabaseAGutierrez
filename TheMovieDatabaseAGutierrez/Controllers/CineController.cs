@@ -13,13 +13,17 @@ namespace TheMovieDatabaseAGutierrez.Controllers
 
             ML.Result result = BL.Cine.GetAll();
             ML.Result resultZona = BL.Zona.GetAll();
+            //ML.Result resultTotalVentas = BL.Estadistica.TotalVentas();
 
             cine.Zona = new ML.Zona();
+           
+            
 
             if (result.Correct && resultZona.Correct)
             {
                 cine.Cines = result.Objects;
                 cine.Zona.Zonas = resultZona.Objects;
+               
                 return View(cine);
             }
             else

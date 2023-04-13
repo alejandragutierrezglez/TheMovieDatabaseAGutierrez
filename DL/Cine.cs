@@ -18,5 +18,6 @@ public partial class Cine
     public int? Zona { get; set; }
     public string NombreZona { get; set; }
 
+
     public virtual Zona? ZonaNavigation { get; set; }
 }

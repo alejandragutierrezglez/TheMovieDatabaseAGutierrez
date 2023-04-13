@@ -26,9 +26,11 @@ namespace BL
                         foreach (var obj in query)
                         {
                             ML.Zona zona = new ML.Zona();
+                            ML.Cine cine = new ML.Cine();
 
                             zona.IdZona = obj.IdZona;
-                            zona.Nombre = obj.Nombre;                           
+                            zona.Nombre = obj.Nombre;
+                            cine.Venta = obj.VENTA_POR_ZONA;
 
                             result.Objects.Add(zona);
                         }
