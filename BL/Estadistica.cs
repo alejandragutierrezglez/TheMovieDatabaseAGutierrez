@@ -108,5 +108,23 @@ namespace BL
             }
             return result;
         }
+
+        //public static ML.Estadistica CalcularPorcentaje(ML.Cine cine)
+        //{
+        //    ML.Result result = new ML.Result();
+        //    ML.Estadistica estadistica = new ML.Estadistica();
+        //    cine.TotalVentas = 0;
+        //    foreach (ML.Cine venta in cine.Estadistica.TotalVentas)
+        //    {
+        //        cine.TotalVentas = cine.TotalVentas + venta.Venta;
+        //    }
+        //    result.Objects = new List<object>();
+        //    foreach (ML.Cine porcentaje in cine.Estadistica.TotalVentas)
+        //    {
+        //        porcentaje.Venta = (porcentaje.Venta / cine.TotalVentas) * 100;
+        //        result.Objects.Add(porcentaje);
+        //    }
+        //    return estadistica;
+        //}
     }
 }

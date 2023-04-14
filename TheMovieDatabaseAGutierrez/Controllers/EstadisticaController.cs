@@ -15,8 +15,8 @@ namespace TheMovieDatabaseAGutierrez.Controllers
             {
 
                 cine.Estadistica.TotalVentas = result.Objects;
-                decimal porcentaje = 0;
-                ML.Estadistica resultPorcentaje = BL.Estadistica.CalcularPorcentaje();
+                
+                ML.Estadistica resultPorcentaje = BL.Estadistica.CalcularPorcentaje(cine);
                 ML.Result result1 = BL.Cine.GetAll();
                 cine.Cines = result1.Objects;
                 return View(cine);
